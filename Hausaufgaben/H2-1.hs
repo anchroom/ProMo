@@ -1,4 +1,4 @@
- {-# OPTIONS_GHC -Wincomplete-patterns #-}
+{-# OPTIONS_GHC -Wincomplete-patterns #-}
 
 
 sort2 :: (Int , Int) -> (Int , Int)

@@ -1,6 +1,10 @@
 -- Vorlage fuer Aufgabe H5-3
 
-data Agent = -- TODO
+data Agent = Player String Double
+  | AI Int
+  | Spectator String
 
 display :: Agent -> String
-display x = error "TODO"
+display (Player name _) = name
+display (AI strength) = "KI(" ++ show strength ++ ")"
+display (Spectator name) = "{" ++ name ++ "}"

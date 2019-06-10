@@ -17,11 +17,17 @@ codes (Node l r)        = (codes l) ++ (codes r)
 --codes (Node l r) = codeHelper t (Node l r) ""
 -}
 
--- String for the changing output
-codeHelper :: HuffmanTree -> String
-codeHelper (Leaf c) = ""
-codeHelper (Node l (Leaf c)) = codeHelper (Node l r) :"1"
-codeHelper (Node l r) = ('0' : codeHelper l) ++ ('1' : codeHelper r)
+-- first tree for the whole stucture
+-- second tree is the latest position
+-- first String is the current tree path, or latest output String
+codeHelper :: HuffmanTree -> HuffmanTree -> String -> String
+codeHelper t ( Leaf c ) "" = ""
+codeHelper t ( Leaf c ) s = c
+codeHelper t ( Node l r ) xs = codeHelper t l ('0':ss)
+codeHelper t ( Node l r ) xs = codeHelper t r ss
+codeHelper t ( Node l r ) " " = " "
+-- alles was keine 0 oder 1 ist bleibt unveraendert
+codeHelper t ( Node l r ) ( s : ss ) = s : ( decodeHelper t t ss )
 
 {--
 

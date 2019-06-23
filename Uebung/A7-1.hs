@@ -1,0 +1,1 @@
+-- | a) f_1 = (uncurry . flip) const

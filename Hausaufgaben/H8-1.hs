@@ -13,4 +13,7 @@ toAscList (Node leftSubTree node rightSubTree) = toAscList leftSubTree ++ [node]
 
 
 lookupRange :: Ord a => a -> a -> Tree a -> Bool
-lookupRange = error "TODO"
+lookupRange low high t = any (\x -> (low <= x) && (x <= high)) t
+  where any f Leaf = False
+        any f (Node l x r) = any f l || any f r
+

@@ -21,7 +21,6 @@ instance Show Expr where
   show (Const i) = show i
   show (Plus e1 e2) = "("++ show e1 ++ "+" ++ show e2 ++")"
   show (Times e1 e2) = "("++ show e1 ++ "*" ++ show e2 ++")"
-
 -- Code Folie 7.30
 data Token = ID Name | CONST Double | LPAREN | RPAREN | PLUS | TIMES
   deriving Show 
@@ -66,13 +65,41 @@ parseFactor _ = error "Syntaxfehler! Variable, Konstante oder öffnende Klammer 
   
 parse :: String -> Expr
 parse str = case parseExpr (lex str) of 
-              (expr, []) -> expr 
+              (expr, []) -> expr
               (_,bad) -> error $ "Unnötiger Ballast am Ende: " ++ show bad
 
 
--- TODO: Definieren Sie die Funktion diff
+-- Definieren Sie die Funktion diff
 diff :: Name -> Expr -> Expr
 diff name (Var xs)          = if name == xs then Const 1 else Const 0
 diff name (Const c )        = Const 0
 diff name (Plus exp1 exp2)  = Plus (diff name exp1) (diff name exp2)
 diff name (Times exp1 exp2) = Plus (Times (diff name exp1) (exp2)) (Times (exp1)(diff name exp2))
+
+-- for simplify
+eval :: Expr -> Expr
+eval (Var x) = var x
+eval (Const n) = const n
+eval (Plus l r) = plus (eval l) (eval r)
+eval (Times l r) = times (eval l) (eval r)
+
+--for every datatype
+var :: Name -> Expr
+var x = Var x
+
+const :: Double -> Expr
+const d = Const d
+
+plus :: Expr -> Expr -> Expr
+plus (Const 0) exp2 = exp2
+plus exp1 (Const 0) = exp1
+plus exp1 exp2      = Plus exp1 exp2
+
+times :: Expr -> Expr -> Expr
+times (Const 0) exp2 = Const 0
+times exp1 (Const 0) = Const 0
+times (Const 1) exp2 = exp2
+times exp1 (Const 1) = exp1
+times exp1 exp2      = Times exp1 exp2
+
+

@@ -72,4 +72,7 @@ parse str = case parseExpr (lex str) of
 
 -- TODO: Definieren Sie die Funktion diff
 diff :: Name -> Expr -> Expr
-diff = error "TODO"
+diff name (Var xs) = parse xs
+diff name (Const c )    = Const 0
+diff name (Plus exp1 exp2) = Plus (diff name exp1) (diff name exp2)
+diff name (Times exp1 exp2) = Plus (Times (diff name exp1) (exp2)) (Times (diff name exp2)(exp1))
